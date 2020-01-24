@@ -655,6 +655,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ballGameobject: {fileID: 1297639637}
+  platformPrefabsDto:
+    platform: {fileID: 7166890837337231856, guid: 41e9547997f3cc6409b5b0ffa2b4690e,
+      type: 3}
 --- !u!114 &1513523341
 MonoBehaviour:
   m_ObjectHideFlags: 0
