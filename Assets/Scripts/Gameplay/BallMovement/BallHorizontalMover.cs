@@ -4,17 +4,17 @@ using Lean.Touch;
 using UnityEngine;
 using Zenject;
 
-namespace Gameplay
+namespace Gameplay.BallMovement
 {
-    public class BallMover : MonoBehaviour
+    public class BallHorizontalMover : MonoBehaviour
     {
         private List<float> _defaultPosition;
-        private int curPositionIndex = 1;
+        private int _curPositionIndex = 1;
 
         [Inject]
-        private void Constructor(List<float> verticalsPositions)
+        private void Constructor(VerticalsSystem verticalsSystem)
         {
-            _defaultPosition = verticalsPositions;
+            _defaultPosition = verticalsSystem.GetVerticalCentres();
         }
 
         private void Awake()
@@ -24,7 +24,7 @@ namespace Gameplay
 
         private void OnFingerSwipe(LeanFinger finger)
         {
-            var newPosition = IsSwipeToRight(finger) ? curPositionIndex + 1 : curPositionIndex - 1;
+            var newPosition = IsSwipeToRight(finger) ? _curPositionIndex + 1 : _curPositionIndex - 1;
             MoveTo(newPosition);
         }
 
@@ -36,16 +36,16 @@ namespace Gameplay
             if (newPositionIndex < 0)
                 newPositionIndex = _defaultPosition.Count - 1;
 
-            curPositionIndex = newPositionIndex;
+            _curPositionIndex = newPositionIndex;
         
             var position = transform.position;
-            var newPosition = new Vector3(_defaultPosition[curPositionIndex], position.y, position.z);
+            var newPosition = new Vector3(_defaultPosition[_curPositionIndex], position.y, position.z);
             SmoothMove(newPosition);
         }
 
         private void SmoothMove(Vector3 targetPosition)
         {
-            transform.DOMove(targetPosition,0.3f).SetEase(Ease.InOutQuad);
+            transform.DOMoveX(targetPosition.x,0.3f).SetEase(Ease.InOutQuad);
         }
 
         private bool IsSwipeToRight(LeanFinger finger)
