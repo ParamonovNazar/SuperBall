@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using UniRx.Async;
 
 namespace PlatformHandles
 {
-    public class PlatformGenerator 
+    public class PlatformGenerator
     {
         private readonly PlatformPool _platformPool;
         private GameObject _mainBall;
@@ -11,9 +12,16 @@ namespace PlatformHandles
         {
             _platformPool = platformPool;
             _mainBall = mainBall;
-
-
         }
+
+        async UniTask Update()
+        {
+            while (true)
+            {
+                await UniTask.DelayFrame(0);
+            }
+        }
+
 
         private void SpawnPlatform()
         {
