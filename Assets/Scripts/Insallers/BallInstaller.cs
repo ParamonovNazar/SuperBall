@@ -1,6 +1,6 @@
-using Dto;
 using Gameplay.BallMovement;
 using Gameplay.Camera;
+using PlatformHandles;
 using UnityEngine;
 using Zenject;
 
@@ -9,15 +9,17 @@ namespace Insallers
     public class BallInstaller : MonoInstaller
     {
         [SerializeField] private GameObject _ballPrefab;
+        [SerializeField] private Platform[] platforms;
         [SerializeField] private CameraController _camera;
-        [SerializeField] private PlatformPrefabsDto platformPrefabsDto;
+        private GameObject _ball;
 
         public override void InstallBindings()
         {
             Container.Bind<VerticalsSystem>().AsSingle().NonLazy();
             CreateAndBindBall();
+            BindPools();
 
-            Container.Bind<PlatformGenerator>().AsSingle().WithArguments(platformPrefabsDto).NonLazy();
+            Container.Bind<PlatformGenerator>().AsSingle().WithArguments(_ball).NonLazy();
         }
 
         private void CreateAndBindBall()
@@ -27,10 +29,23 @@ namespace Insallers
             Container.Bind<BallVerticalMover>().AsSingle();
             Container.Bind<BallHorizontalMover>().AsSingle();
 
-            var ball = Container.InstantiatePrefab(_ballPrefab);
-            ball.transform.position = new Vector3(verticalPositions[1], 0f, 0f);
+            _ball = Container.InstantiatePrefab(_ballPrefab);
+            _ball.transform.position = new Vector3(verticalPositions[1], 0f, 0f);
 
-            _camera.Target = ball.transform;
+            _camera.Target = _ball.transform;
+        }
+        
+        
+        private void BindPools()
+        {
+
+            foreach (var platform in platforms)
+            {
+                Container.BindMemoryPool<Platform, Platform.Pool>().WithFactoryArguments(platform.PlatformType).FromComponentInNewPrefab(platform)
+                    .UnderTransformGroup(platform.PlatformType + "Platforms");
+            }
+
+            Container.Bind<PlatformPool>().AsSingle();
         }
     }
 }

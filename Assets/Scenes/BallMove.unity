@@ -982,10 +982,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ballPrefab: {fileID: 2825621774837210689, guid: c4f6d46860d4c1947a3e3f062cdbd87e,
     type: 3}
+  platforms:
+  - {fileID: 4238748781722455605, guid: 3cac4793e408b204c99c77da8a6cff50, type: 3}
+  - {fileID: 4238748781722455605, guid: 41e9547997f3cc6409b5b0ffa2b4690e, type: 3}
+  - {fileID: 4238748781722455605, guid: 6853d375f64bb7f438a3000e28266474, type: 3}
   _camera: {fileID: 2028885365}
-  platformPrefabsDto:
-    platform: {fileID: 7166890837337231856, guid: 41e9547997f3cc6409b5b0ffa2b4690e,
-      type: 3}
 --- !u!114 &1513523341
 MonoBehaviour:
   m_ObjectHideFlags: 0
