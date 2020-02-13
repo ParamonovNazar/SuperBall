@@ -19,7 +19,7 @@ namespace Insallers
             Container.Bind<VerticalsSystem>().AsSingle().NonLazy();
             CreateAndBindBall();
             BindPools();
-
+            
             Container.Bind<PlatformGenerator>().AsSingle().WithArguments(_ball).NonLazy();
             Container.Bind<LineRoot>().FromInstance(_lineRoot).AsSingle().NonLazy();
         }
@@ -30,8 +30,11 @@ namespace Insallers
 
             _ball = Container.InstantiatePrefab(_ballPrefab);
             _ball.transform.position = new Vector3(verticalPositions[1], 0f, 0f);
-            Container.Bind<BallVerticalMover>().AsSingle();
-            Container.Bind<BallHorizontalMover>().AsSingle();
+            var ballVerticalMover = _ball.GetComponent<BallVerticalMover>();
+            var ballHorizontalMover = _ball.GetComponent<BallHorizontalMover>();
+
+            Container.Bind<BallVerticalMover>().FromInstance(ballVerticalMover).AsSingle();
+            Container.Bind<BallHorizontalMover>().FromInstance(ballHorizontalMover).AsSingle();
             _camera.Target = _ball.transform;
         }
         

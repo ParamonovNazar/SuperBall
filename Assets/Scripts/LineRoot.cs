@@ -1,4 +1,5 @@
-﻿using Gameplay.BallMovement;
+﻿using System;
+using Gameplay.BallMovement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,15 @@ public class LineRoot : MonoBehaviour
 {
     [SerializeField] private List<VerticalLine> verticalLines = null;
 
-    [Inject] private BallHorizontalMover horizontalMover;
-    [Inject] private BallVerticalMover verticalMover;
+    private BallHorizontalMover horizontalMover;
+    private BallVerticalMover verticalMover;
+
+    [Inject]
+    private void Constructor(BallHorizontalMover horizontalMover, BallVerticalMover verticalMover)
+    {
+        this.horizontalMover = horizontalMover;
+        this.verticalMover = verticalMover;
+    }
 
     private void Start()
     {
