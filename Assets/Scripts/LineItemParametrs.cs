@@ -6,12 +6,14 @@ public struct LineItemParametrs
 {
     public float length;
     public Color color;
+    public int id;
     
 
     public LineItemParametrs(float length, int id)
     {
         color = GetColorById(id);
         this.length = length;
+        this.id = id;
     }
 
     private static Color GetColorById(int id)
@@ -23,9 +25,9 @@ public struct LineItemParametrs
             case 2:
                 return Color.green;
             case 3:
-                return Color.blue;
-            default:
                 return Color.yellow;
+            default:
+                return Color.blue;
         }
     }
 }

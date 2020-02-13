@@ -11,6 +11,8 @@ namespace Gameplay.BallMovement
         private List<float> _defaultPosition;
         private int _curPositionIndex = 1;
 
+        public int CurrentPositionIndex { get { return _curPositionIndex; } } 
+
         [Inject]
         private void Constructor(VerticalsSystem verticalsSystem)
         {
@@ -56,6 +58,12 @@ namespace Gameplay.BallMovement
         private void OnDestroy()
         {
             LeanTouch.OnFingerSwipe -= OnFingerSwipe;
+        }
+
+        public void MoveToNeighbor()
+        {
+            int newPositionIndex = Random.Range(0, 2) == 0 ? -1 : 1;
+            MoveTo(_curPositionIndex + newPositionIndex);
         }
     }
 }

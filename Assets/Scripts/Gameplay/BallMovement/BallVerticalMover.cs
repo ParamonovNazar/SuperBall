@@ -6,8 +6,15 @@ namespace Gameplay.BallMovement
     {
         [SerializeField] private float _maxSpeed = 3f;
         [SerializeField] private float _currentSpeed = 0f;
-        [SerializeField] private float _acceleration = 1f;
-        
+        [SerializeField] private float _defaultAcceleration = 1f;
+
+        private float _acceleration;
+
+        private void Start()
+        {
+            _acceleration = _defaultAcceleration;
+        }
+
         private void Update()
         {
             var curPosition = transform.position;
@@ -18,6 +25,11 @@ namespace Gameplay.BallMovement
         public void DropSpeed()
         {
             _currentSpeed = 0.5f;
+        }
+
+        public void SetAcceceleration(float value)
+        {
+            _acceleration = _defaultAcceleration + value;
         }
     }
 }

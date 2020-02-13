@@ -1,55 +1,91 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using Random = UnityEngine.Random;
+using Zenject;
+using Gameplay.BallMovement;
 
 public class VerticalLine : MonoBehaviour
 {
+    [SerializeField] private int lineIndex;
     [SerializeField] private Transform start = null;
     [SerializeField] private Transform end = null;
 
     [SerializeField] private LineItem lineItem = null;
+
+    private BallHorizontalMover horizontalMover = null;
+    private BallVerticalMover verticalMover = null;
+
+    private LineItemPool objectPool;
+
+    private List<LineItem> lineItems;
+
+    private LineItem currentItem;
 
     public float SpawnYPosition
     {
         get
         {
             if (lineItems.Count == 0)
-                return start.position.y;
+                return StartYPosition;
 
-            LineItem lineItem = lineItems.Dequeue();
-            return lineItem.transform.position.y - lineItem.transform.localScale.y/2;
+            LineItem lineItem = lineItems[lineItems.Count - 1];
+            return lineItem.transform.position.y - lineItem.transform.localScale.y / 2;
         }
     }
 
-    public float EndYPosition
-    {
-        get
-        {
-            return end.position.y;
-        }
-    }
-    public float StartYPosition
-    {
-        get
-        {
-            return start.position.y;
-        }
-    }
+    public float EndYPosition => end.position.y;
 
-    private Queue<LineItem> lineItems;
+    public float StartYPosition => start.position.y;
     void Start()
     {
-        lineItems = new Queue<LineItem>();
+
+        lineItems = new List<LineItem>();
+        objectPool = new LineItemPool(this, horizontalMover, lineItem, 10);
         AddLine();
     }
 
     public void AddLine()
     {
-        LineItem lineItem = Instantiate(this.lineItem, transform);
-        lineItem.Initialize(this, new LineItemParametrs(Random.Range(2F, 4F), Random.Range(1,5)));
-        lineItems.Enqueue(lineItem);
+        lineItems.Add(objectPool.GetObject());
+        if (currentItem == null)
+        {
+            currentItem = lineItems[0];
+        }
     }
+
+    public void ReturnToPool(LineItem lineItem)
+    {
+        lineItems.Remove(lineItem);
+        objectPool.ReturnObject(lineItem);
+        lineItem.Initialize(objectPool.GetNewParametrs());
+    }
+
+    private void Update()
+    {
+        float delta = currentItem.transform.localScale.y / 2;
+        if (Mathf.Abs(horizontalMover.transform.position.y - currentItem.transform.position.y) > delta)
+            GetCurrentItem();
+
+        AccelerationEffect();
+    }
+
+    private void GetCurrentItem()
+    {
+        currentItem = lineItems.Find(item => item.transform.localScale.y / 2 >= Mathf.Abs(horizontalMover.transform.position.y - item.transform.position.y));
+    }
+
+    public void AccelerationEffect()
+    {
+        if (horizontalMover.CurrentPositionIndex == lineIndex)
+        {
+            verticalMover.SetAcceceleration(currentItem.GetAcceleration());
+        }
+    }
+
+    public void SetBallComponent(BallHorizontalMover ballHorizontalMover, BallVerticalMover ballVerticalMover)
+    {
+        horizontalMover = ballHorizontalMover;
+        verticalMover = ballVerticalMover;
+    } 
 
 }

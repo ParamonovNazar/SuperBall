@@ -11,6 +11,7 @@ namespace Insallers
         [SerializeField] private GameObject _ballPrefab;
         [SerializeField] private Platform[] platforms;
         [SerializeField] private CameraController _camera;
+        [SerializeField] private LineRoot _lineRoot;
         private GameObject _ball;
 
         public override void InstallBindings()
@@ -20,18 +21,17 @@ namespace Insallers
             BindPools();
 
             Container.Bind<PlatformGenerator>().AsSingle().WithArguments(_ball).NonLazy();
+            Container.Bind<LineRoot>().FromInstance(_lineRoot).AsSingle().NonLazy();
         }
 
         private void CreateAndBindBall()
         {
             var verticalPositions = Container.Resolve<VerticalsSystem>().GetVerticalCentres();
 
-            Container.Bind<BallVerticalMover>().AsSingle();
-            Container.Bind<BallHorizontalMover>().AsSingle();
-
             _ball = Container.InstantiatePrefab(_ballPrefab);
             _ball.transform.position = new Vector3(verticalPositions[1], 0f, 0f);
-
+            Container.Bind<BallVerticalMover>().AsSingle();
+            Container.Bind<BallHorizontalMover>().AsSingle();
             _camera.Target = _ball.transform;
         }
         
