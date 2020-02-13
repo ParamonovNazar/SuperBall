@@ -13,6 +13,7 @@ public class LineItem : PoolingObject
 
     private float length;
     private int id;
+    public int Id => id;
 
     public void Initialize(VerticalLine verticalLine, BallHorizontalMover ballHorizontalMover, LineItemParametrs parametrs)
     {

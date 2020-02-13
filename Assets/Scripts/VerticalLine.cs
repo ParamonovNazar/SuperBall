@@ -21,6 +21,8 @@ public class VerticalLine : MonoBehaviour
 
     private LineItem currentItem;
 
+    private bool yellowBall;
+
     public float SpawnYPosition
     {
         get
@@ -71,15 +73,24 @@ public class VerticalLine : MonoBehaviour
 
     private void GetCurrentItem()
     {
+        int currentId = 0;
+        if(currentItem!=null)
+            currentId = currentItem.Id;
         currentItem = lineItems.Find(item => item.transform.localScale.y / 2 >= Mathf.Abs(horizontalMover.transform.position.y - item.transform.position.y));
+        if (currentId == 2 && currentItem != null && currentItem.Id != 2)
+            yellowBall = true;
     }
 
     public void AccelerationEffect()
     {
         if (horizontalMover.CurrentPositionIndex == lineIndex && currentItem!=null)
         {
+            if (yellowBall)
+                horizontalMover.MoveToNeighbor();
+            else
             verticalMover.SetAcceceleration(currentItem.GetAcceleration());
         }
+        yellowBall = false;
     }
 
     public void SetBallComponent(BallHorizontalMover ballHorizontalMover, BallVerticalMover ballVerticalMover)

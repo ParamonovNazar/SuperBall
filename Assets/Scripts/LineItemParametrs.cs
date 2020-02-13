@@ -27,7 +27,7 @@ public struct LineItemParametrs
             case 2:
                 return Color.yellow;
             default:
-                return Color.blue;
+                return Color.grey;
         }
     }
 }
