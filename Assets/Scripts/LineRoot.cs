@@ -19,7 +19,7 @@ public class LineRoot : MonoBehaviour
         this.verticalMover = verticalMover;
     }
 
-    private void Start()
+    private void Awake()
     {
         for (int i = 0; i < verticalLines.Count; i++)
             verticalLines[i].SetBallComponent(horizontalMover, verticalMover);

@@ -76,7 +76,7 @@ public class VerticalLine : MonoBehaviour
 
     public void AccelerationEffect()
     {
-        if (horizontalMover.CurrentPositionIndex == lineIndex)
+        if (horizontalMover.CurrentPositionIndex == lineIndex && currentItem!=null)
         {
             verticalMover.SetAcceceleration(currentItem.GetAcceleration());
         }

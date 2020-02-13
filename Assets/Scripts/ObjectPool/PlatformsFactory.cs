@@ -26,7 +26,7 @@ public class PlatformsFactory : Factory<LineItem>
     public LineItemParametrs GetRandomParametrs()
     {
         float lenght = Random.Range(4F, 8F);
-        int colorId = Random.Range(1, 5);
+        int colorId = Random.Range(0, 4);
         LineItemParametrs lineItem = new LineItemParametrs(lenght, colorId);
 
         return lineItem;

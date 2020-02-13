@@ -20,11 +20,11 @@ public struct LineItemParametrs
     {
         switch(id)
         {
-            case 1:
+            case 0:
                 return Color.red;
-            case 2:
+            case 1:
                 return Color.green;
-            case 3:
+            case 2:
                 return Color.yellow;
             default:
                 return Color.blue;

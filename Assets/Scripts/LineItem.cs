@@ -61,11 +61,11 @@ public class LineItem : PoolingObject
     {
         if(id == 0)
         {
-            return -0.2F;
+            return -0.5F;
         }
         if(id == 1)
         {
-            return 0.2F;
+            return 0.5F;
         }
         return 0;
     }
